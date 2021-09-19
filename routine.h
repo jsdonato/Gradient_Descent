@@ -26,7 +26,6 @@ public:
         while (arma::norm(grad, 2) > 0.00000001) {
             grad = gradient->eval(x);
             x = x - step_size * grad;
-            //std::cout << x << std::endl << std::endl;
         }
         return x;
     }
