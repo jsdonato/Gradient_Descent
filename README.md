@@ -15,7 +15,8 @@ This code is intended to support the research being conducted by Howard Levinson
 
 | `-p` option |Option description for `-p`|
 | --- | --- |
-| `linsys` |This problem is concerned with minimizing `|Ax-b|_{2}^2` where `A` and `b` are entered in the `input.h` file.|
+| `linsys` |This problem is concerned with minimizing `[Ax-b]_{2}^2` where `A` and `b` are entered in the `input.h` file.|
+| `matrixsys`|This problem is concerned with minimizing `[AXB-C]_{2}^2+[X_0]_2^2` where `X_0` is equivalent to `X` except that `X_0` is all zeros along the diagonal. `A`,`B` and `C` are entered in the `input.h` file.|
 
 | `-r` option |Option description for `-r`|
 | --- | --- |
