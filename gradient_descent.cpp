@@ -14,10 +14,13 @@ public:
         if (problem_name == "linsys") {
             gradient = std::make_unique<LinSysGradient>(A, b);
         }
+        if (problem_name == "matrixsys") {
+            gradient = std::make_unique<MatrixGradient>(A, B, C, ERROR_WEIGHT);
+        }
         if (routine_name == "simple") {
             routine = std::make_unique<SimpleRoutine>(gradient);
         }
-        std::cout << routine->run() << std::endl;
+        std::cout << routine->Run() << std::endl;
     }
     
     
