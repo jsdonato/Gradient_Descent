@@ -3,8 +3,11 @@
 
 #include <armadillo>
 
-const double step_size = 0.001;
+const arma::mat STARTING_POINT = {{-0.5, 0},
+                                  {0, 0.5}};
 
-const arma::mat starting_point = arma::colvec( {-1, 0.5, -1} );
+const double ERROR_WEIGHT = 15;
+
+const double STEP_SIZE = 0.00001;
 
 #endif /* constants_h */
