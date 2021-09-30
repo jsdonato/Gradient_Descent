@@ -8,7 +8,7 @@
 
 class Routine {
 public:
-    virtual arma::mat run() const = 0;
+    virtual arma::mat Run() const = 0;
     
     virtual ~Routine() = default;
     
@@ -20,12 +20,13 @@ class SimpleRoutine : public Routine {
 public:
     SimpleRoutine(std::unique_ptr<Gradient>& grad) : gradient(std::move(grad)) {}
     
-    arma::mat run() const override {
-        arma::mat grad = gradient->eval(starting_point);
-        arma::mat x = starting_point - step_size * grad;
+    arma::mat Run() const override {
+        arma::mat grad = gradient->Eval(STARTING_POINT);
+        arma::mat x = STARTING_POINT - STEP_SIZE * grad;
         while (arma::norm(grad, 2) > 0.00000001) {
-            grad = gradient->eval(x);
-            x = x - step_size * grad;
+            grad = gradient->Eval(x);
+            x = x - STEP_SIZE * grad;
+            std::cout << x << std::endl << std::endl;
         }
         return x;
     }
