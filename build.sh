@@ -1,1 +1,1 @@
-g++ gradient_descent.cpp -o grad -std=c++17 -O2 -larmadillo
+g++ main_example.cpp -o main_example -std=c++17 -O2 -larmadillo

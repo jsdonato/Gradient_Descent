@@ -4,17 +4,19 @@
 
 class Gradient {
 public:
-    virtual arma::mat Eval(const arma::mat &x) const = 0;
+    Gradient() {}
     
+    virtual arma::mat gradEval(const arma::mat &x) const = 0;
+     
     virtual ~Gradient() = default;
 };
 
-//Derived class used to compute \nabla F(x) where F(x)=|Ax-b|_2^2
 class LinSysGradient : public Gradient {
 public:
-    LinSysGradient(arma::mat A_, arma::mat b_) : A(A_), b(b_) {}
+    LinSysGradient(arma::mat A_, arma::mat b_) : 
+   	           A(A_), b(b_) {}
     
-    arma::mat Eval(const arma::mat& x) const override {
+    arma::mat gradEval(const arma::mat& x) const override {
         return 2 * A.t() * (A * x - b);
     }
     
@@ -23,13 +25,12 @@ private:
     const arma::mat b;
 };
 
-//Derived class used to compute \nabla F(X) where F(X)=|C-AXB|_2^2
 class MatrixGradient : public Gradient {
 public:
     MatrixGradient(arma::mat A_, arma::mat B_, arma::mat C_, double error_weight_) :
-                   A(A_), B(B_), C(C_), error_weight(error_weight_) {}
+                  A(A_), B(B_), C(C_), error_weight(error_weight_) {}
     
-    arma::mat Eval(const arma::mat& X) const override {
+    arma::mat gradEval(const arma::mat& X) const override {
         arma::mat result(X.n_rows, X.n_cols);
         const arma::mat C_minus_AXB = C - A * X * B;
         
@@ -46,8 +47,6 @@ public:
                 
             }
         }
-        
-        
         return result;
     }
     
@@ -58,10 +57,7 @@ private:
     const arma::mat C;
     double error_weight;
     
-    uint8_t kroneckerDelta(const size_t& i, const size_t& j) const {
-        return (i == j) ? 1 : 0;
-    }
+    uint8_t kroneckerDelta(const size_t& i, const size_t& j) const { return (i == j) ? 1 : 0; }
 };
-
 
 #endif /* gradient_h */
