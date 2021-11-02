@@ -36,15 +36,56 @@ public:
 	          Routine(gradient_, starting_point_, step_size_) {}
     
     arma::cx_mat Run() const override {
-        arma::cx_mat grad = gradient->gradEval(starting_point);
-        arma::cx_mat x = starting_point - step_size * grad;
-        while (arma::norm(grad, 2) > 0.00000001) {
-            grad = gradient->gradEval(x);
-            x = x - step_size * grad;
+        arma::cx_mat g = gradient->grad(starting_point);
+        arma::cx_mat x = starting_point - step_size * g;
+        print(x);
+	while (arma::norm(g, 2) > 0.00000001) {
+            g = gradient->grad(x);
+            x = x - step_size * g;
             print(x);
         }
-        return x;
+        return x; 
+
     }
+
+};
+
+class ExperimentalRoutine : public Routine {
+public:
+    ExperimentalRoutine(std::shared_ptr<Gradient> gradient_, arma::cx_mat starting_point_, double initial_step_size_) : 
+	          Routine(gradient_, starting_point_, initial_step_size_) {}
+
+    
+
+    arma::cx_mat Run() const override { 
+	double temp_step_size = step_size;              
+            arma::cx_mat g = gradient->grad(starting_point);
+            arma::cx_mat old_x = starting_point;                
+            arma::cx_mat new_x = starting_point - step_size * g;
+            while (gradient->f(old_x) > gradient->f(new_x)) {                                                       
+                temp_step_size *= 2;                         
+                old_x = new_x;                               
+                new_x = new_x - temp_step_size * g;
+            }                                                                                                         
+            g = gradient->grad(old_x);                            
+            new_x = old_x - step_size * g;                        
+            temp_step_size = step_size;                           
+                                          
+            print(old_x);                          
+            while (arma::norm(g, 2) > 0.00000001) {              
+                while (gradient->f(old_x) > gradient->f(new_x)) {                                                       
+                    temp_step_size *= 2;                                                                                
+                    old_x = new_x;                                                                                      
+                    new_x = new_x - temp_step_size * g;                                                                 
+                }                                                
+                g = gradient->grad(old_x);                            
+                new_x = old_x - step_size * g;                        
+                temp_step_size = step_size;                           
+                print(old_x);                                         
+            }                                                         
+            return old_x; 
+    }
+
 };
 
 

@@ -18,7 +18,7 @@ int main() {
     const arma::mat C = {{2, 7},
                          {4, 14}};
     
-    grad::Descent<MatrixGradient,SimpleRoutine> descent(A, B, C, ERROR_WEIGHT, STARTING_POINT, STEP_SIZE);
+    grad::Descent<MatrixGradient, SimpleRoutine> descent(A, B, C, ERROR_WEIGHT, STARTING_POINT, STEP_SIZE);
     descent.Run();
     return 0;
 }
