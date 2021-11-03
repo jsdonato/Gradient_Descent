@@ -20,5 +20,6 @@ int main() {
     
     grad::Descent<MatrixGradient, SimpleRoutine> descent(A, B, C, ERROR_WEIGHT, STARTING_POINT, STEP_SIZE);
     descent.Run();
+    std::cout << "RESULT :" << descent.Result();
     return 0;
 }

@@ -20,13 +20,16 @@ public:
 	}
     }
 
-    virtual arma::cx_mat Run() const = 0;
+    arma::cx_mat Result() { return result; }
+
+    virtual void Run() = 0;
     
     virtual ~Routine() = default;
     
 protected:
     std::shared_ptr<Gradient> gradient = nullptr;
     arma::cx_mat starting_point;
+    arma::cx_mat result;
     double step_size;
 };
 
@@ -35,7 +38,7 @@ public:
     SimpleRoutine(std::shared_ptr<Gradient> gradient_, arma::cx_mat starting_point_, double step_size_) : 
 	          Routine(gradient_, starting_point_, step_size_) {}
     
-    arma::cx_mat Run() const override {
+    void Run() override {
         arma::cx_mat g = gradient->grad(starting_point);
         arma::cx_mat x = starting_point - step_size * g;
         print(x);
@@ -44,7 +47,7 @@ public:
             x = x - step_size * g;
             print(x);
         }
-        return x; 
+        result = x; 
 
     }
 
@@ -57,7 +60,7 @@ public:
 
     
 
-    arma::cx_mat Run() const override { 
+    void Run() override { 
 	double temp_step_size = step_size;              
             arma::cx_mat g = gradient->grad(starting_point);
             arma::cx_mat old_x = starting_point;                
@@ -83,7 +86,7 @@ public:
                 temp_step_size = step_size;                           
                 print(old_x);                                         
             }                                                         
-            return old_x; 
+            result = old_x; 
     }
 
 };

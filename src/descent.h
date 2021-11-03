@@ -30,6 +30,8 @@ public:
     }
 
     void Run() { routine->Run(); }
+
+    arma::cx_mat Result() { return routine->Result(); }
     
     
 private:
